@@ -47,9 +47,9 @@
 </div>
 <div id="setup-screen" class="setup" role="region" aria-label="Application setup" style="display:none;">
   <h1>Welcome to <span style="color:var(--accent)">Capabal</span></h1>
-  <p style="color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:18px;">Your AI-powered job application manager. Uses Google <strong style="color:var(--text)">Gemini AI</strong> â€” completely free, no credit card needed.</p>
+  <p style="color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:18px;">Your AI-powered job application manager. Uses Google <strong style="color:var(--text)">Gemini AI</strong> — completely free, no credit card needed.</p>
   <div class="setup-step"><span class="step-pill">1</span><div>Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" aria-label="aistudio.google.com/app/apikey (opens in new tab)"><strong>aistudio.google.com/app/apikey</strong></a> and sign in with your Google account</div></div>
-  <div class="setup-step"><span class="step-pill">2</span><div>Click <strong>"Create API Key"</strong> â€” instant and free</div></div>
+  <div class="setup-step"><span class="step-pill">2</span><div>Click <strong>"Create API Key"</strong> — instant and free</div></div>
   <div class="setup-step"><span class="step-pill">3</span><div>Copy the key and paste it below</div></div>
   <div style="display:flex;gap:8px;margin-top:14px;">
     <input id="key-input" type="password" placeholder="Paste your Gemini API key..." aria-label="Gemini API key" class="field" style="flex:1;" onkeydown="if(event.key==='Enter')saveKey()">
@@ -139,17 +139,17 @@
           <div id="add-status" role="status" aria-live="polite" style="display:none;font-size:13px;color:var(--muted);align-items:center;gap:8px;"></div>
           <div id="add-error" role="alert" aria-live="assertive" style="display:none;font-size:13px;color:var(--red);margin-top:6px;"></div>
         </div>
-        <div class="card"><p style="font-size:13px;color:var(--muted);line-height:1.7;">Paste any job URL â€” Seek, LinkedIn, Indeed, company career pages. AI extracts the title, company, location, salary and description, plus generates interview questions and company facts.</p></div>
+        <div class="card"><p style="font-size:13px;color:var(--muted);line-height:1.7;">Paste any job URL — Seek, LinkedIn, Indeed, company career pages. AI extracts the title, company, location, salary and description, plus generates interview questions and company facts.</p></div>
       </div>
       <div id="add-mode-paste" role="tabpanel" aria-labelledby="add-tab-paste" style="display:none;">
         <div class="card">
           <h3>Paste the Job Ad Text</h3>
-          <textarea id=”paste-input” class=”field” style=”min-height:200px;padding:12px 13px;line-height:1.6;resize:vertical;margin-bottom:10px;” placeholder=”Copy and paste the full job ad text here â€” title, company, description, requirements, anything you have...” aria-label=”Job ad text”></textarea>
+          <textarea id="paste-input" class="field" style="min-height:200px;padding:12px 13px;line-height:1.6;resize:vertical;margin-bottom:10px;" placeholder="Copy and paste the full job ad text here — title, company, description, requirements, anything you have..." aria-label="Job ad text"></textarea>
           <button class="btn btn-primary" id="analyse-paste-btn" onclick="analyseJobText()" style="width:100%;">Analyse Job Ad</button>
           <div id="paste-status" role="status" aria-live="polite" style="display:none;font-size:13px;color:var(--muted);align-items:center;gap:8px;margin-top:8px;"></div>
           <div id="paste-error" role="alert" aria-live="assertive" style="display:none;font-size:13px;color:var(--red);margin-top:6px;"></div>
         </div>
-        <div class="card"><p style="font-size:13px;color:var(--muted);line-height:1.7;">Copy the full job ad from any source â€” email, PDF, screenshot text, Slack message, anything. AI will extract the title, company, location, salary and description, plus generate interview questions and company facts.</p></div>
+        <div class="card"><p style="font-size:13px;color:var(--muted);line-height:1.7;">Copy the full job ad from any source — email, PDF, screenshot text, Slack message, anything. AI will extract the title, company, location, salary and description, plus generate interview questions and company facts.</p></div>
       </div>
     </div>
     <!-- CV MATCH -->
@@ -281,7 +281,7 @@
         <div style="margin-bottom:14px;"><button class="btn btn-ghost btn-sm" onclick="closeDocEditor('cover')">Back to Cover Letters</button></div>
         <div class="doc-editor">
           <div class="editor-head">
-            <input id=cover-name-input class=”editor-title-input” placeholder=”Cover letter name (e.g. Marketing Manager â€” SEEK)” aria-label=”Cover letter name”>
+            <input id=cover-name-input class="editor-title-input" placeholder="Cover letter name (e.g. Marketing Manager — SEEK)" aria-label="Cover letter name">
             <div style="display:flex;gap:7px;">
               <button class="btn btn-ghost btn-sm" onclick="triggerUpload('cover')">Upload File</button>
               <input type="file" id="cover-file-upload" accept=".txt,.md,.pdf,.docx,.doc" style="display:none;" onchange="handleDocUpload(event,'cover')">
@@ -328,7 +328,7 @@
         </div>
         <div id="cover-ai-panel" style="display:none;">
           <div class="ai-panel">
-            <h4>AI Edit â€” Senior Sydney Recruiter</h4>
+            <h4>AI Edit — Senior Sydney Recruiter</h4>
             <div class="ai-suggestions">
               <button class="ai-chip" onclick="setInstruction('cover','Tailor for a similar role at a different company')">Adapt for new role</button>
               <button class="ai-chip" onclick="setInstruction('cover','Make the opening paragraph more attention-grabbing')">Stronger opening</button>
@@ -546,13 +546,13 @@
         <input id="rgen-target" type="text" class="field" placeholder="e.g. Senior Product Manager in fintech / SaaS">
       </div>
       <div style="margin-bottom:14px;">
-        <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Your Background (be detailed â€” dump everything you can think of)</label>
-        <textarea id="rgen-background" class="field" style="min-height:150px;padding:10px 13px;line-height:1.6;resize:vertical;" placeholder="List your work history, key achievements, skills, education, certifications â€” anything relevant. Don't worry about formatting, just get it all down.&#10;&#10;Example:&#10;5 years at Atlassian as Product Manager, led team of 8, launched 3 major features, grew MAU 40%. Before that 3 years at a startup...&#10;BSc Computer Science UNSW, Certified Scrum Master..."></textarea>
+        <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Your Background (be detailed — dump everything you can think of)</label>
+        <textarea id="rgen-background" class="field" style="min-height:150px;padding:10px 13px;line-height:1.6;resize:vertical;" placeholder="List your work history, key achievements, skills, education, certifications — anything relevant. Don't worry about formatting, just get it all down.&#10;&#10;Example:&#10;5 years at Atlassian as Product Manager, led team of 8, launched 3 major features, grew MAU 40%. Before that 3 years at a startup...&#10;BSc Computer Science UNSW, Certified Scrum Master..."></textarea>
       </div>
       <div style="margin-bottom:14px;">
         <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Tailor to a specific job (optional)</label>
         <select id="rgen-job-select" class="field" style="cursor:pointer;">
-          <option value="">General resume â€” no specific job</option>
+          <option value="">General resume — no specific job</option>
         </select>
       </div>
       <div style="margin-bottom:14px;">
@@ -575,7 +575,7 @@
       <button class="modal-close" onclick="closeAccommodationModal()" aria-label="Close">&#x2715;</button>
     </div>
     <div class="modal-body">
-      <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;">Select a template and describe your access needs. Gemini will generate a legally-grounded letter under the <em>Disability Discrimination Act 1992</em> and <em>Fair Work Act 2009</em>.</p>
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;">Select a template and describe your access needs. Gemini will generate a professional, supportive letter tailored to your specific requirements.</p>
       <div style="margin-bottom:14px;">
         <label for="accom-template-select" style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">Select Template</label>
         <select id="accom-template-select" class="field" style="cursor:pointer;" aria-label="Accommodation request template"></select>

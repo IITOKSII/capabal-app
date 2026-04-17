@@ -36,6 +36,8 @@ Last updated: 2026-03-29
 - [x] dashboard.js + modal.js -- "NEW" badge for unseen clipper jobs; cleared on modal open
 
 ### Awaiting User Verification
+- [x] Bug Fix: index.html — fixed smart quotes (”) breaking id="paste-input" and other attributes (2026-04-03)
+- [x] UI Clean-up: index.html — replaced corrupted UTF-8 sequences (â€") with proper em-dashes (2026-04-03)
 - [ ] Verify A11y Rating badge appears on dashboard cards and full breakdown shows in modal
 - [ ] Verify Clipper dedup: LinkedIn/SEEK tracking URLs treated as same job; "Save Anyway" works on duplicate screen
 
