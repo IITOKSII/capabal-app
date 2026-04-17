@@ -1,4 +1,4 @@
-// ── Capabal.app Data Type Definitions ──────────────────────────────────────────
+// ── Capabl.app Data Type Definitions ──────────────────────────────────────────
 // TypeScript-style interface documentation for all Firestore-persisted objects.
 // This file is import-free (assets layer — zero dependencies).
 //
@@ -114,4 +114,4 @@
 // Document is used for both Resumes (state.resumes) and Cover Letters (state.covers).
 // The arrays are stored separately in Firestore under data/resumes and data/covers.
 
-export const WORKABLE_TYPES = "defined-above"; // prevents tree-shaking of this file
+export const CAPABL_TYPES = "defined-above"; // prevents tree-shaking of this file

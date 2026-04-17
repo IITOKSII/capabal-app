@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Capabal Clipper",
+  "name": "Capabl Clipper",
   "version": "1.0.0",
-  "description": "Clip job postings from any site directly into your Capabal tracker",
+  "description": "Clip job postings from any site directly into your Capabl tracker",
   "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": ["<all_urls>"],
   "background": {
@@ -10,7 +10,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Capabal Clipper"
+    "default_title": "Capabl Clipper"
   },
   "content_scripts": [
     {

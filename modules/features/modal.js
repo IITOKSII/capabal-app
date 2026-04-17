@@ -349,7 +349,7 @@ export async function suggestBarrierSolution(barrierId) {
   try {
     const prompt = `Given the accessibility barrier: "${b.description}", suggest a specific, professional, and reasonable accommodation or solution the candidate can propose to the employer.`;
     const text = await callGemini(prompt);
-    solEl.innerHTML = `<div class="barrier-solution-box"><div class="tip-label">CAPABAL TIP</div><div class="tip-body">${esc(text)}</div></div>`;
+    solEl.innerHTML = `<div class="barrier-solution-box"><div class="tip-label">CAPABL TIP</div><div class="tip-body">${esc(text)}</div></div>`;
   } catch (e) {
     solEl.innerHTML = `<div style="margin-top:8px;padding:8px 10px;background:var(--red)11;border-left:3px solid var(--red);border-radius:4px;font-size:12px;color:var(--red);">${esc(e.message)}</div>`;
     toast(e.message, "err");

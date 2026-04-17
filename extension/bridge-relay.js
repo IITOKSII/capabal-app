@@ -1,4 +1,4 @@
-// Capabal.app Clipper — bridge-relay.js
+// Capabl.app Clipper — bridge-relay.js
 // Runs in ISOLATED world (default content script context).
 // Has access to chrome.storage.local. Relays requests from bridge.js (MAIN world)
 // via window.postMessage and sends back results.
@@ -7,7 +7,7 @@
   "use strict";
 
   window.addEventListener("message", async (event) => {
-    if (event.source !== window || !event.data?.__workableBridge) return;
+    if (event.source !== window || !event.data?.__capablBridge) return;
     const { id, method, args } = event.data;
 
     try {
@@ -36,9 +36,9 @@
         });
       }
 
-      window.postMessage({ __workableBridgeReply: true, id, result: result ?? null }, "*");
+      window.postMessage({ __capablBridgeReply: true, id, result: result ?? null }, "*");
     } catch (e) {
-      window.postMessage({ __workableBridgeReply: true, id, error: e.message }, "*");
+      window.postMessage({ __capablBridgeReply: true, id, error: e.message }, "*");
     }
   });
 })();

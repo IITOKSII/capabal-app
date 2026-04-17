@@ -1,4 +1,4 @@
-# Capabal Master Project Memory
+# Capabl Master Project Memory
 Last updated: 2026-03-29
 
 ## System Architecture (Verified)
@@ -27,7 +27,7 @@ Last updated: 2026-03-29
 - [x] Bug Fix: preview-engine.js -- blank second PDF page fix (2026-03-16, quizzical-lamport)
 - [x] Checklist 2 -- UI Manual Testing (user confirmed 2026-03-16)
 
-### Done -- Capabal.app Clipper fixes (2026-03-16, upbeat-chatterjee, PR #17 + #18)
+### Done -- Capabl.app Clipper fixes (2026-03-16, upbeat-chatterjee, PR #17 + #18)
 - [x] Bug Fix: bridge.js -- CRITICAL: was calling chrome.storage.local in MAIN world (chrome undefined there)
   - Fix: postMessage relay. bridge.js (MAIN) sends messages; bridge-relay.js (ISOLATED, new) handles chrome.storage
   - manifest.json updated to load bridge-relay.js at document_start (ISOLATED world)
@@ -52,10 +52,10 @@ Last updated: 2026-03-29
 - **One failure fixed**: `.a11y-toggle.on::after` — white thumb (#fff) on --accent (#2ec4b6) = 2.17:1 (fails 3:1). Fixed to `background:#111` → 8.71:1 ✅
 - File changed: `styles/a11y.css` line 19
 
-### Done — Project Rebrand to Capabal (2026-03-29)
-- [x] index.html: title, setup screen heading, sidebar logo updated to "Capabal"
-- [x] manifest.json (root): name/short_name → "Capabal"
-- [x] extension/manifest.json: name → "Capabal Clipper", description + default_title updated
+### Done — Project Rebrand to Capabl (2026-03-29)
+- [x] index.html: title, setup screen heading, sidebar logo updated to "Capabl"
+- [x] manifest.json (root): name/short_name → "Capabl"
+- [x] extension/manifest.json: name → "Capabl Clipper", description + default_title updated
 - [x] GEMINI.md header updated
 - [x] CHANGELOG.md rebrand entry added
 
@@ -97,7 +97,7 @@ Last updated: 2026-03-29
   - `renderBarriers(j)` + `addBarrier()` added to modal.js; wired into `openModal`
   - Both exported and bound to `window` via app.js `Object.assign`
 - [x] Integrated AI-powered solution suggestions for logged barriers (2026-03-29)
-  - `suggestBarrierSolution(barrierId)` calls Gemini with barrier description; renders response as "CAPABAL TIP" box inline under each barrier
+  - `suggestBarrierSolution(barrierId)` calls Gemini with barrier description; renders response as "CAPABL TIP" box inline under each barrier
 - [x] Styled barrier solution boxes and refined modal UX (2026-03-29)
   - `.barrier-solution-box` CSS class added to components.css (accent left-border, surface background)
   - `#m-barrier-sec` hidden by default when no barriers logged; revealed via "⚠ Log Barrier" button in modal actions (`showBarrierSection()`)

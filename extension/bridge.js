@@ -1,4 +1,4 @@
-// Capabal.app Clipper — bridge.js
+// Capabl.app Clipper — bridge.js
 // Runs in world: "MAIN" (page JS context). chrome.* APIs are NOT available here.
 // Communicates with bridge-relay.js (ISOLATED world) via postMessage to access
 // chrome.storage.local. bridge-relay.js must be loaded alongside this file.
@@ -10,15 +10,15 @@
 (function () {
   "use strict";
 
-  if (window.__workableClipper) return; // guard against double-injection
-  window.__workableClipper = true;
+  if (window.__capablClipper) return; // guard against double-injection
+  window.__capablClipper = true;
 
   let _nextId = 0;
   const _pending = new Map();
 
   // Receive replies from bridge-relay.js (ISOLATED world)
   window.addEventListener("message", (event) => {
-    if (event.source !== window || !event.data?.__workableBridgeReply) return;
+    if (event.source !== window || !event.data?.__capablBridgeReply) return;
     const { id, result, error } = event.data;
     const p = _pending.get(id);
     if (!p) return;
@@ -31,7 +31,7 @@
     return new Promise((resolve, reject) => {
       const id = ++_nextId;
       _pending.set(id, { resolve, reject });
-      window.postMessage({ __workableBridge: true, id, method, args }, "*");
+      window.postMessage({ __capablBridge: true, id, method, args }, "*");
     });
   }
 

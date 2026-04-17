@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// ── Capabal.app Firestore Security Rules ──────────────────────────────────────
+// ── Capabl.app Firestore Security Rules ──────────────────────────────────────
 //
 // Schema (all data lives under users/{userId}):
 //

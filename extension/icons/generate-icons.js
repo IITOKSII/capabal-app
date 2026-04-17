@@ -1,4 +1,4 @@
-// Capabal.app Clipper — generate-icons.js
+// Capabl.app Clipper — generate-icons.js
 // Run once with Node.js to produce PNG icons from the SVG source.
 // Requires: npm install sharp (or use any SVG→PNG tool)
 //

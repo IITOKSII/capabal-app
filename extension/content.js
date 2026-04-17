@@ -1,4 +1,4 @@
-// Capabal.app Clipper — content.js
+// Capabl.app Clipper — content.js
 // Extracts job data from popular job sites.
 // Runs on all pages at document_idle; responds to SCRAPE_JOB messages from popup.
 
@@ -112,7 +112,7 @@
     return { title, company, location, salary, description };
   }
 
-  function scrapeWorkable() {
+  function scrapeWorkableATS() {
     const title = text("h1.job-title") || text("h1[class*='title']") || text("h1");
     const company = text("[class*='company-name']") || metaContent("og:site_name");
     const location = text("[class*='location']") || text("[class*='workplace-type']");
@@ -196,7 +196,7 @@
     else if (host.includes("seek.com"))    { data = scrapeSeek();       canonicalUrl = seekCanonicalUrl(); }
     else if (host.includes("jora.com"))    { data = scrapeJora(); }
     else if (host.includes("glassdoor.")) { data = scrapeGlassdoor(); }
-    else if (host.includes("workable."))  { data = scrapeWorkable(); }
+    else if (host.includes("workable."))  { data = scrapeWorkableATS(); }
     else                                   { data = scrapeGeneric(); }
 
     // Quality gate — if we got nothing useful fall back to generic
@@ -227,7 +227,7 @@
         sendResponse({ ok: false, detected: false, data: null, error: e.message });
       }
     } else if (msg.type === "GET_GEMINI_KEY") {
-      // Read from the page's localStorage (where Capabal.app stores the key)
+      // Read from the page's localStorage (where Capabl.app stores the key)
       try {
         sendResponse({ key: localStorage.getItem("gemini_key") || null });
       } catch (_e) {

@@ -1,4 +1,4 @@
-# Capabal.app PRD
+# Capabl.app PRD
 
 ## Mission
 Empowering people with disabilities through independent career management tools.
