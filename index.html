@@ -116,8 +116,9 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" id="analytics-charts">
         <div class="card"><h3 style="font-size:13px;margin-bottom:12px;">Applications Over Time</h3><canvas id="chart-timeline" height="200" role="img" aria-label="Applications over time chart"></canvas></div>
         <div class="card"><h3 style="font-size:13px;margin-bottom:12px;">Status Breakdown</h3><canvas id="chart-status" height="200" role="img" aria-label="Status breakdown chart"></canvas></div>
-        <div class="card"><h3 style="font-size:13px;margin-bottom:12px;">Response Rate Funnel</h3><div id="chart-funnel"></div></div>
-        <div class="card"><h3 style="font-size:13px;margin-bottom:12px;">Applications by Company</h3><div id="chart-companies" style="max-height:220px;overflow-y:auto;"></div></div>
+        <div class="card"><h3 style="font-size:13px;margin-bottom:12px;">Response Rate Funnel</h3><div id="chart-funnel" role="img" aria-label="Response rate funnel chart"></div></div>
+        <div class="card"><h3 style="font-size:13px;margin-bottom:12px;">Applications by Company</h3><div id="chart-companies" style="max-height:220px;overflow-y:auto;" role="img" aria-label="Applications by company chart"></div></div>
+        <div class="card" style="grid-column:1/-1;"><h3 style="font-size:13px;margin-bottom:12px;">Values Match Distribution</h3><div id="chart-values-match" role="img" aria-label="Values match score distribution chart"></div></div>
       </div>
     </div>
     <!-- ADD JOB -->
@@ -485,9 +486,13 @@
         <div class="section-title">Accessibility Rating</div>
         <div id="m-a11y-content"></div>
       </div>
-      <div class="section" id="m-values-sec" style="display:none;">
+      <div class="section" id="m-values-sec" style="display:none;" aria-label="Values match section">
         <div class="section-title">Values Match</div>
-        <div id="m-values-content"></div>
+        <div id="m-values-content" aria-live="polite"></div>
+      </div>
+      <div class="section" id="m-reliability-sec" style="display:none;" aria-label="Employer reliability section">
+        <div class="section-title">Employer Reliability</div>
+        <div id="m-reliability-content" aria-live="polite"></div>
       </div>
       <div class="section"><div class="section-title">My Notes</div><textarea id="m-notes" class="field" style="min-height:72px;padding:10px 13px;line-height:1.6;resize:vertical;" placeholder="Add your notes..." aria-label="Job application notes"></textarea></div>
       <div class="section"><div class="section-title">Application Timeline</div><div id="m-timeline" class="timeline"></div></div>

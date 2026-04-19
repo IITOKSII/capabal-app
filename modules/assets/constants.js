@@ -17,6 +17,12 @@ export const GEMINI_MODELS = [
   "gemini-1.5-pro",
 ];
 
+// Companies with verified inclusive hiring practices — used by getEmployerReliability().
+export const TRUSTED_EMPLOYERS = [
+  "Google", "Microsoft", "Atlassian", "Salesforce", "IBM",
+  "Adobe", "Canva", "Xero", "ServiceNow", "Thoughtworks",
+];
+
 export const CHECKLIST_ITEMS = [
   { key: "resume_sent",    label: "Resume uploaded / sent"         },
   { key: "cover_written",  label: "Cover letter written"           },

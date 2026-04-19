@@ -6,6 +6,18 @@ import { callGemini, parseJSON } from "../config/gemini.config.js";
 import { saveJobs } from "../services/db.service.js";
 import { setStatus, showErr, clearErr, scoreColor, toast } from "../ui/utils.js";
 import { esc } from "../ui/utils.js";
+import { TRUSTED_EMPLOYERS } from "../assets/constants.js";
+
+// ── Employer Reliability (placeholder — replace with live data source) ───────
+
+export function getEmployerReliability(companyName) {
+  const normalized = (companyName || "").trim().toLowerCase();
+  const trusted = TRUSTED_EMPLOYERS.find(t => t.toLowerCase() === normalized);
+  if (trusted) return { score: 92, source: "Capabl Verified" };
+  // Deterministic mock until a live data source (e.g. Glassdoor API) is integrated.
+  const seed = companyName.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  return { score: 40 + (seed % 41), source: "mock" };
+}
 
 // ── Add-mode tab toggle ──────────────────────────────────────────────────────
 
@@ -41,6 +53,7 @@ export async function analyseJob() {
       interview_questions: d.interview_questions || [], company_facts: d.company_facts || [],
       breakdown: d.breakdown || null, a11yRating: d.a11y_rating || null,
       valuesMatch: d.values_match?.score ?? null, valuesMatchReason: d.values_match?.reason || "",
+      ...(() => { const r = getEmployerReliability(d.company || ""); return { reliabilityScore: r.score, reliabilitySource: r.source }; })(),
       status: "applied", notes: "", date: new Date().toISOString(),
     };
     state.jobs.unshift(job);
@@ -83,6 +96,7 @@ export async function analyseJobText() {
       interview_questions: d.interview_questions || [], company_facts: d.company_facts || [],
       breakdown: d.breakdown || null, a11yRating: d.a11y_rating || null,
       valuesMatch: d.values_match?.score ?? null, valuesMatchReason: d.values_match?.reason || "",
+      ...(() => { const r = getEmployerReliability(d.company || ""); return { reliabilityScore: r.score, reliabilitySource: r.source }; })(),
       status: "saved", notes: "", date: new Date().toISOString(), rawText: raw,
     };
     state.jobs.unshift(job);

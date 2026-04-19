@@ -23,17 +23,24 @@ export function renderAnalytics() {
   state.jobs.forEach(j => { if (j.checklist) CHECKLIST_ITEMS.forEach(item => { checkTotal++; if (j.checklist[item.key]) checkDone++; }); });
   const checkPct = checkTotal > 0 ? Math.round(checkDone / checkTotal * 100) : 0;
 
+  const jobsWithValues = state.jobs.filter(j => j.valuesMatch != null);
+  const avgValuesMatch = jobsWithValues.length
+    ? Math.round(jobsWithValues.reduce((s, j) => s + j.valuesMatch, 0) / jobsWithValues.length)
+    : null;
+
   document.getElementById("analytics-kpis").innerHTML =
     `<div class="kpi-card"><div class="kpi-val">${total}</div><div class="kpi-label">Total Apps</div></div>` +
     `<div class="kpi-card"><div class="kpi-val" style="color:var(--accent)">${interviewRate}%</div><div class="kpi-label">Interview Rate</div></div>` +
     `<div class="kpi-card"><div class="kpi-val" style="color:var(--green)">${offerRate}%</div><div class="kpi-label">Offer Rate</div></div>` +
     `<div class="kpi-card"><div class="kpi-val" style="color:var(--blue)">${avgDays}</div><div class="kpi-label">Avg to Interview</div></div>` +
-    `<div class="kpi-card"><div class="kpi-val" style="color:var(--purple)">${checkPct}%</div><div class="kpi-label">Checklist Done</div></div>`;
+    `<div class="kpi-card"><div class="kpi-val" style="color:var(--purple)">${checkPct}%</div><div class="kpi-label">Checklist Done</div></div>` +
+    `<div class="kpi-card"><div class="kpi-val" style="color:var(--accent)">${avgValuesMatch != null ? avgValuesMatch + "%" : "\u2014"}</div><div class="kpi-label">Avg Values Match</div></div>`;
 
   _renderTimelineChart();
   _renderStatusChart();
   _renderFunnel(total, counts);
   _renderCompanyChart();
+  _renderValuesMatchChart();
 }
 
 function _renderTimelineChart() {
@@ -124,6 +131,33 @@ function _renderCompanyChart() {
       <span style="min-width:100px;text-align:right;color:var(--text);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(name)}</span>
       <div class="company-bar-fill" style="width:${pct}%;"></div>
       <span style="color:var(--muted);font-size:11px;">${count}</span>
+    </div>`;
+  }).join("");
+}
+
+function _renderValuesMatchChart() {
+  const el = document.getElementById("chart-values-match");
+  if (!el) return;
+  const scored = state.jobs.filter(j => j.valuesMatch != null);
+  if (!scored.length) { el.innerHTML = '<p style="color:var(--muted);font-size:13px;">No values match data yet</p>'; return; }
+
+  const buckets = [
+    { label: "0–25%",   min: 0,  max: 25  },
+    { label: "26–50%",  min: 26, max: 50  },
+    { label: "51–75%",  min: 51, max: 75  },
+    { label: "76–100%", min: 76, max: 100 },
+  ];
+  const colors = ["#ff6b81", "#ffbe76", "#56b4f9", "#2ed573"];
+
+  const counts = buckets.map(b => scored.filter(j => j.valuesMatch >= b.min && j.valuesMatch <= b.max).length);
+  const maxCount = Math.max(...counts, 1);
+
+  el.innerHTML = buckets.map((b, i) => {
+    const pct = Math.round(counts[i] / maxCount * 100);
+    return `<div class="company-bar">
+      <span style="min-width:60px;text-align:right;color:var(--text);font-size:12px;">${b.label}</span>
+      <div class="company-bar-fill" style="width:${pct}%;background:${colors[i]};"></div>
+      <span style="color:var(--muted);font-size:11px;">${counts[i]}</span>
     </div>`;
   }).join("");
 }

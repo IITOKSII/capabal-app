@@ -79,6 +79,8 @@
  * @property {JobSection[]} [breakdown]               - Detailed, structured breakdown of the job
  * @property {number} [valuesMatch]                   - 0–100 alignment score against user's Inclusion Profile
  * @property {string} [valuesMatchReason]             - 1-2 sentence AI explanation of the alignment score
+ * @property {number} [reliabilityScore]              - 0–100 employer reliability score (external data)
+ * @property {string} [reliabilitySource]             - Source of the reliability score (e.g. "mock", "glassdoor")
  */
 
 /**

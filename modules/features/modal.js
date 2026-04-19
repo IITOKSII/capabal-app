@@ -130,6 +130,29 @@ export function openModal(id) {
     a11ySec.style.display = "none";
   }
 
+  const relSec = document.getElementById("m-reliability-sec");
+  if (relSec) {
+    if (j.reliabilityScore != null) {
+      const score = j.reliabilityScore;
+      const isVerified = j.reliabilitySource === "Capabl Verified";
+      const color  = score >= 75 ? "var(--green)" : score >= 50 ? "#e07b00" : "var(--red)";
+      const label  = score >= 75 ? "High" : score >= 50 ? "Moderate" : "Low";
+      const srcBadge = isVerified
+        ? `<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:var(--accent)22;color:var(--accent);font-weight:600;">&#10003; Capabl Verified</span>`
+        : `<span style="font-size:10px;color:var(--muted);">Source: ${esc(j.reliabilitySource)}</span>`;
+      document.getElementById("m-reliability-content").innerHTML =
+        `<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;" aria-label="Employer reliability: ${label}, score ${score} out of 100">
+          <span style="font-size:22px;" aria-hidden="true">&#x1F6E1;</span>
+          <span style="font-size:20px;font-weight:700;color:${color};">${score}</span>
+          <span style="font-size:13px;color:${color};font-weight:600;">${label}</span>
+          ${srcBadge}
+        </div>`;
+      relSec.style.display = "";
+    } else {
+      relSec.style.display = "none";
+    }
+  }
+
   const vmSec = document.getElementById("m-values-sec");
   if (j.valuesMatch !== null && j.valuesMatch !== undefined) {
     const vc = scoreColor(j.valuesMatch);
