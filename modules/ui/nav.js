@@ -25,6 +25,12 @@ export function showView(v) {
   if (v === "resumes")   window.renderResumeList();
   if (v === "covers")    window.renderCoverList();
   if (v === "emails")    window.renderEmailTemplates();
+  if (v === "settings") {
+    const an = document.getElementById("settings-access-needs");
+    const vl = document.getElementById("settings-values");
+    if (an) an.value = window._state?.userProfile?.accessNeeds || "";
+    if (vl) vl.value = window._state?.userProfile?.values      || "";
+  }
 
   // Move focus to new view heading — screen reader users hear the page title on nav
   const heading = document.querySelector("#view-" + v + " .page-title");

@@ -76,3 +76,4 @@ export async function fbLoadCollection(name) {
 export function saveJobs()    { storeSet("jt_jobs",    JSON.stringify(state.jobs));    fbSaveCollection("jobs",    state.jobs); }
 export function saveResumes() { storeSet("jt_resumes", JSON.stringify(state.resumes)); fbSaveCollection("resumes", state.resumes); }
 export function saveCovers()  { storeSet("jt_covers",  JSON.stringify(state.covers));  fbSaveCollection("covers",  state.covers); }
+export function saveProfile() { storeSet("jt_profile", JSON.stringify(state.userProfile)); }

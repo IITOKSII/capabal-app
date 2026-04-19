@@ -25,7 +25,9 @@ if (typeof pdfjsLib !== "undefined") {
 // ── Imports ──────────────────────────────────────────────────────────────────
 import { initFirebase } from "./config/firebase.config.js";
 import { loadA11yPrefs } from "./a11y/toolbar.js";
-import { loadAllData } from "./services/auth.service.js";
+import { loadAllData, saveInclusionProfile } from "./services/auth.service.js";
+import { state } from "./state.js";
+window._state = state;
 
 // Navigation
 import { showView, mobNav, toggleMobMore } from "./ui/nav.js";
@@ -165,7 +167,7 @@ Object.assign(window, {
 
   // Auth
   signInWithGoogle, signOut, updateAuthUI,
-  saveKey, updateKey,
+  saveKey, updateKey, saveInclusionProfile,
 
   // Accessibility
   ttsSpeak, ttsPause, ttsStop, ttsCycleSpeed,

@@ -13,6 +13,7 @@ export const state = {
   editingDocId:    { resume: null, cover: null },
   resumeTemplate:  "modern",
   coverTemplate:   "modern",
+  userProfile:     { accessNeeds: "", values: "" },
 };
 
 // Firebase + API runtime values (not serialisable — don't persist these)

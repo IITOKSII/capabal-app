@@ -3,7 +3,7 @@
 
 import { state, fb } from "../state.js";
 import { isFirebaseConfigured, initFirebase } from "../config/firebase.config.js";
-import { storeGet, storeSet, fbLoadCollection } from "./db.service.js";
+import { storeGet, storeSet, fbLoadCollection, saveProfile } from "./db.service.js";
 import { toast } from "../ui/utils.js";
 
 // ── Google Sign-in / Sign-out ────────────────────────────────────────────────
@@ -100,14 +100,16 @@ export async function loadAllData() {
             }
           }
         } catch (_e) {}
-        const [k, rt, ct, wm] = await Promise.all([
+        const [k, rt, ct, wm, prof] = await Promise.all([
           storeGet("gemini_key"), storeGet("jt_resume_tpl"),
           storeGet("jt_cover_tpl"), storeGet("jt_gemini_model"),
+          storeGet("jt_profile"),
         ]);
         fb.apiKey            = k  || "";
         state.resumeTemplate = rt || "modern";
         state.coverTemplate  = ct || "modern";
         fb.workingModel      = wm || "";
+        if (prof) { try { Object.assign(state.userProfile, JSON.parse(prof)); } catch (_e) {} }
         // Mirror key to chrome.storage.local so Clipper can access it
         if (k) { try { if (window.storage) await window.storage.set("gemini_key", k); } catch (_e) {} }
         document.getElementById("loading-screen").style.display = "none";
@@ -125,10 +127,11 @@ export async function loadAllData() {
     });
   } else {
     try {
-      const [j, r, c, k, rt, ct, wm] = await Promise.all([
+      const [j, r, c, k, rt, ct, wm, prof] = await Promise.all([
         storeGet("jt_jobs"), storeGet("jt_resumes"), storeGet("jt_covers"),
         storeGet("gemini_key"), storeGet("jt_resume_tpl"),
         storeGet("jt_cover_tpl"), storeGet("jt_gemini_model"),
+        storeGet("jt_profile"),
       ]);
       state.jobs    = j ? JSON.parse(j) : [];
       state.resumes = r ? JSON.parse(r) : [];
@@ -137,6 +140,7 @@ export async function loadAllData() {
       state.resumeTemplate = rt || "modern";
       state.coverTemplate  = ct || "modern";
       fb.workingModel      = wm || "";
+      if (prof) { try { Object.assign(state.userProfile, JSON.parse(prof)); } catch (_e) {} }
     } catch (e) { console.error("Load error:", e); }
     document.getElementById("loading-screen").style.display = "none";
     if (fb.apiKey) {
@@ -160,6 +164,14 @@ export async function saveKey() {
   document.getElementById("setup-screen").style.display = "none";
   document.getElementById("app").style.display = "flex";
   window.renderDashboard();
+}
+
+export async function saveInclusionProfile() {
+  state.userProfile.accessNeeds = (document.getElementById("settings-access-needs")?.value || "").trim();
+  state.userProfile.values      = (document.getElementById("settings-values")?.value       || "").trim();
+  await saveProfile();
+  const msg = document.getElementById("profile-save-msg");
+  if (msg) { msg.style.display = "block"; setTimeout(() => msg.style.display = "none", 2500); }
 }
 
 export async function updateKey() {
