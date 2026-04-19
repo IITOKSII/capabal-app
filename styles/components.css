@@ -32,7 +32,7 @@ input::placeholder,textarea::placeholder{color:var(--muted);opacity:0.6;}
 .card-company{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;font-weight:600;margin-bottom:5px;}
 .card-title{font-size:14px;font-weight:600;margin-bottom:6px;line-height:1.35;color:var(--text);}
 .card-meta{display:flex;gap:10px;font-size:10.5px;color:var(--muted);flex-wrap:wrap;}
-.card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.card-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
 .card-date{font-size:10px;color:var(--muted);}
 .match-pill{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;}
 .kanban{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;}
@@ -76,7 +76,7 @@ input::placeholder,textarea::placeholder{color:var(--muted);opacity:0.6;}
 .a11y-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
 .a11y-tag{font-size:11px;padding:2px 9px;border-radius:20px;background:rgba(46,196,182,0.1);color:var(--accent);border:1px solid rgba(46,196,182,0.25);}
 /* Barrier solution AI tip box */
-.barrier-solution-box{margin-top:8px;padding:10px 12px;background:var(--surface);border-left:3px solid var(--accent);border-radius:4px;}
+.barrier-solution-box{margin-top:8px;padding:10px 12px;background:var(--surface);border-left:4px solid var(--accent);border-radius:4px;}
 .barrier-solution-box .tip-label{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:5px;letter-spacing:0.05em;}
 .barrier-solution-box .tip-body{font-size:13px;color:var(--text);line-height:1.6;}
 /* Section title */
