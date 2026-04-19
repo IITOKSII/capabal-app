@@ -185,6 +185,7 @@ export function openModal(id) {
     (state.resumes.length ? `<button class="btn btn-ghost btn-sm" onclick="autoTailorResume(${j.id})">&#9997; Tailor Resume</button>` : "") +
     `<button class="btn btn-ghost btn-sm" onclick="openAccommodationModal(${j.id})">&#9855; Request Accommodations</button>` +
     `<button class="btn btn-ghost btn-sm" onclick="showBarrierSection()">&#9888; Log Barrier</button>` +
+    `<button class="btn btn-ghost btn-sm" onclick="generateAdvocacyReport(${j.id})">&#128196; Generate A11y Report</button>` +
     `<button class="btn btn-danger btn-sm" style="margin-left:auto;" onclick="deleteFromModal()">Delete</button>`;
 
   renderTimeline(j);

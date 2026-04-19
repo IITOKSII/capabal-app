@@ -5,6 +5,7 @@ import { state } from "../state.js";
 import { esc, toast, loadScript } from "../ui/utils.js";
 import { storeSet } from "../services/db.service.js";
 import { ttsBtnHTML } from "../a11y/tts.js";
+import { getAdvocacyReportHTML } from "../assets/report-templates.js";
 
 // ── Template switching ───────────────────────────────────────────────────────
 
@@ -280,6 +281,48 @@ export async function downloadDoc(type, format) {
       toast("DOCX downloaded!", "ok");
     } catch (e) { toast("DOCX export failed: " + e.message, "err"); }
   }
+}
+
+// ── Advocacy Report PDF ──────────────────────────────────────────────────────
+
+export async function generateAdvocacyReport(jobId) {
+  const j = state.jobs.find(x => x.id === jobId); if (!j) { toast("Job not found", "err"); return; }
+
+  const barriersFound = (j.barriers || []).map(b => b.description);
+  const valuesAlignment = j.valuesMatchReason || (j.valuesMatch != null ? `${j.valuesMatch}% values match` : null);
+  const html = getAdvocacyReportHTML({
+    company:        j.company,
+    a11yScore:      j.a11yRating?.score ?? 0,
+    barriersFound,
+    valuesAlignment,
+  });
+
+  toast("Generating A11y Report...", "ok");
+  await loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
+  await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
+
+  const wrap = document.createElement("div");
+  wrap.style.cssText = "position:fixed;top:-9999px;left:0;width:794px;background:#fff;";
+  wrap.innerHTML = html;
+  document.body.appendChild(wrap);
+  try {
+    const canvas = await html2canvas(wrap, { scale: 2, useCORS: true, backgroundColor: "#ffffff", width: 794 });
+    const imgData = canvas.toDataURL("image/jpeg", 0.95);
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfW = pdf.internal.pageSize.getWidth();
+    const pdfH = pdf.internal.pageSize.getHeight();
+    const imgH = (canvas.height * pdfW) / canvas.width;
+    let y = 0;
+    while (y < imgH) {
+      if (y > 0) { if (imgH - y < 5) break; pdf.addPage(); }
+      pdf.addImage(imgData, "JPEG", 0, -y, pdfW, imgH);
+      y += pdfH;
+    }
+    pdf.save(`${j.company.replace(/[^a-zA-Z0-9]/g, "-")}-A11y-Report.pdf`);
+    toast("A11y Report downloaded!", "ok");
+  } catch (e) { toast("Report export failed: " + e.message, "err"); }
+  finally { document.body.removeChild(wrap); }
 }
 
 function _buildDocxHTML(type, text) {

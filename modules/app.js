@@ -61,6 +61,7 @@ import {
   setResumeTemplate, setCoverTemplate,
   setEditorMode, refreshPreview, updateWordCount,
   renderResumePreview, renderCoverPreview, downloadDoc,
+  generateAdvocacyReport,
 } from "./features/preview-engine.js";
 
 // Modal
@@ -141,6 +142,7 @@ Object.assign(window, {
   setResumeTemplate, setCoverTemplate,
   setEditorMode, refreshPreview, updateWordCount,
   renderResumePreview, renderCoverPreview, downloadDoc,
+  generateAdvocacyReport,
 
   // Modal
   openModal, closeModal, updateStatus,
