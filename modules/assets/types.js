@@ -77,6 +77,8 @@
  * @property {BarrierLog[]} [barriers]               - User-logged accessibility/process barriers for this job
  * @property {A11yRating} [a11yRating]               - AI-extracted accessibility rating
  * @property {JobSection[]} [breakdown]               - Detailed, structured breakdown of the job
+ * @property {number} [valuesMatch]                   - 0–100 alignment score against user's Inclusion Profile
+ * @property {string} [valuesMatchReason]             - 1-2 sentence AI explanation of the alignment score
  */
 
 /**

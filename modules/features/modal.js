@@ -130,6 +130,19 @@ export function openModal(id) {
     a11ySec.style.display = "none";
   }
 
+  const vmSec = document.getElementById("m-values-sec");
+  if (j.valuesMatch !== null && j.valuesMatch !== undefined) {
+    const vc = scoreColor(j.valuesMatch);
+    document.getElementById("m-values-content").innerHTML =
+      `<div style="display:flex;align-items:center;gap:10px;margin-bottom:${j.valuesMatchReason ? "8px" : "0"};">
+        <span class="match-pill" style="background:${vc}22;color:${vc};font-size:12px;padding:3px 10px;">${j.valuesMatch}% match</span>
+      </div>
+      ${j.valuesMatchReason ? `<p style="font-size:13px;color:var(--muted);margin:0;line-height:1.6;">${esc(j.valuesMatchReason)}</p>` : ""}`;
+    vmSec.style.display = "";
+  } else {
+    vmSec.style.display = "none";
+  }
+
   document.getElementById("m-notes").value = j.notes || "";
 
   const isec = document.getElementById("m-interview-sec");
