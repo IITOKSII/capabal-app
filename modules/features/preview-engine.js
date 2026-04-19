@@ -2,7 +2,7 @@
 // Depends on tts.js only for the inline read-aloud buttons.
 
 import { state } from "../state.js";
-import { esc, toast } from "../ui/utils.js";
+import { esc, toast, loadScript } from "../ui/utils.js";
 import { storeSet } from "../services/db.service.js";
 import { ttsBtnHTML } from "../a11y/tts.js";
 
@@ -237,6 +237,8 @@ export async function downloadDoc(type, format) {
 
   if (format === "pdf") {
     toast("Generating PDF...", "ok");
+    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
+    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
     const wrap = document.createElement("div");
     wrap.style.cssText = "position:fixed;top:-9999px;left:0;width:794px;background:#fff;padding:52px 56px;font-family:DM Sans,sans-serif;";
     wrap.className = "doc-preview tpl-" + tpl;
