@@ -68,6 +68,24 @@ async function getApiKey() {
   } catch (_e) { return null; }
 }
 
+async function getProfile() {
+  // 1. Try chrome.storage.local (synced by bridge-relay when app is open)
+  const stored = await new Promise(resolve => {
+    chrome.storage.local.get("jt_profile", data => {
+      resolve(data.jt_profile?.value || null);
+    });
+  });
+  if (stored) { try { return JSON.parse(stored); } catch (_e) {} }
+
+  // 2. Fall back: read from active tab's localStorage
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const resp = await chrome.tabs.sendMessage(tab.id, { type: "GET_PROFILE" });
+    if (resp?.profile) return JSON.parse(resp.profile);
+  } catch (_e) {}
+  return null;
+}
+
 function parseGeminiJSON(text) {
   const cleaned = text.replace(/```json\s*/gi, "").replace(/```\s*/g, "").trim();
   try { return JSON.parse(cleaned); } catch (_e) {}
@@ -77,10 +95,16 @@ function parseGeminiJSON(text) {
   try { return JSON.parse(cleaned.substring(start, end + 1)); } catch (_e) { return null; }
 }
 
-async function analyseWithGemini(description, key) {
+async function analyseWithGemini(description, key, profile) {
   const sanitised = description.replace(/\r\n/g, "\n").substring(0, 8000);
+  const profileCtx = (profile?.accessNeeds || profile?.values)
+    ? `\n\nCANDIDATE PROFILE:\n${profile.accessNeeds ? `Access needs: ${profile.accessNeeds}\n` : ""}${profile.values ? `Work values: ${profile.values}\n` : ""}`
+    : "";
+  const valuesSchema = profileCtx
+    ? `,"values_match":{"score":0,"reason":"1-2 sentence explanation of alignment or misalignment with candidate profile"}`
+    : "";
   const systemMsg = "You are a job posting analyser. You MUST respond with ONLY a raw JSON object. No markdown, no backticks, no commentary, no text before or after the JSON. Just the JSON object.";
-  const prompt = `Extract structured information from this job advertisement text. If any field is not mentioned in the text, use "N/A" for strings or empty arrays for lists.\n\nIMPORTANT: Separate the job ad's own screening/application questions from interview preparation questions you generate to help the applicant practise. Instead of a single flat description, provide a comprehensive breakdown of the job ad into thematic sections — include ALL important information from the ad.\n\nJOB AD TEXT:\n"""\n${sanitised}\n"""\n\nRespond with ONLY this JSON structure (no other text):\n{"title":"job title","company":"company name","location":"city or region","salary":"salary if mentioned","description":"2-3 sentence plain-text summary of the role","breakdown":[{"section":"Role Overview","items":["..."]},{"section":"Responsibilities","items":["..."]},{"section":"Requirements","items":["..."]},{"section":"Perks & Benefits","items":["..."]}],"requirements":["requirement 1","requirement 2","requirement 3"],"application_questions":[{"question":"screening question from the job ad itself"}],"interview_questions":[{"type":"Behavioral","question":"AI-generated practice question","answer":"A strong 3-4 sentence suggested answer using STAR method where appropriate"},{"type":"Technical","question":"...","answer":"..."},{"type":"Role-Specific","question":"...","answer":"..."},{"type":"Situational","question":"...","answer":"..."},{"type":"Culture Fit","question":"...","answer":"..."}],"company_facts":[{"label":"Industry","value":"..."},{"label":"Size","value":"..."},{"label":"Known For","value":"..."},{"label":"Culture","value":"..."}],"a11y_rating":{"score":0,"details":"Brief justification based on disclosed accessibility support","criteria":["..."]}}`;
+  const prompt = `Extract structured information from this job advertisement text. If any field is not mentioned in the text, use "N/A" for strings or empty arrays for lists.\n\nIMPORTANT: Separate the job ad's own screening/application questions from interview preparation questions you generate to help the applicant practise. Instead of a single flat description, provide a comprehensive breakdown of the job ad into thematic sections — include ALL important information from the ad.${profileCtx}\n\nJOB AD TEXT:\n"""\n${sanitised}\n"""\n\nRespond with ONLY this JSON structure (no other text):\n{"title":"job title","company":"company name","location":"city or region","salary":"salary if mentioned","description":"2-3 sentence plain-text summary of the role","breakdown":[{"section":"Role Overview","items":["..."]},{"section":"Responsibilities","items":["..."]},{"section":"Requirements","items":["..."]},{"section":"Perks & Benefits","items":["..."]}],"requirements":["requirement 1","requirement 2","requirement 3"],"application_questions":[{"question":"screening question from the job ad itself"}],"interview_questions":[{"type":"Behavioral","question":"AI-generated practice question","answer":"A strong 3-4 sentence suggested answer using STAR method where appropriate"},{"type":"Technical","question":"...","answer":"..."},{"type":"Role-Specific","question":"...","answer":"..."},{"type":"Situational","question":"...","answer":"..."},{"type":"Culture Fit","question":"...","answer":"..."}],"company_facts":[{"label":"Industry","value":"..."},{"label":"Size","value":"..."},{"label":"Known For","value":"..."},{"label":"Culture","value":"..."}],"a11y_rating":{"score":0,"details":"Brief justification based on disclosed accessibility support","criteria":["..."]}${valuesSchema}}`;
 
   const body = JSON.stringify({
     contents: [{ parts: [{ text: prompt }] }],
@@ -126,12 +150,27 @@ function buildJob(scrapedData, analysed, status) {
     company_facts:        analysed?.company_facts        || [],
     breakdown:            analysed?.breakdown            || null,
     a11yRating:           analysed?.a11y_rating          || null,
+    valuesMatch:          analysed?.values_match?.score  ?? null,
+    valuesMatchReason:    analysed?.values_match?.reason || "",
     status,
     notes:                "",
     date:                 new Date().toISOString(),
     source:               "clipper",
     seen:                 false,
   };
+}
+
+// ── Values Match display ──────────────────────────────────────────────────────
+
+function renderValuesMatch(score, reason) {
+  const container = document.getElementById("values-match-container");
+  if (!container || score === null || score === undefined) return;
+  const pill = document.getElementById("vm-pill");
+  const reasonEl = document.getElementById("vm-reason");
+  pill.textContent = `VM ${score}%`;
+  pill.className = "vm-pill " + (score >= 70 ? "vm-high" : score >= 40 ? "vm-mid" : "vm-low");
+  if (reason) reasonEl.textContent = reason;
+  container.style.display = "";
 }
 
 // ── Clip handler ──────────────────────────────────────────────────────────────
@@ -148,8 +187,8 @@ async function handleClip() {
   let analysed = null;
   if (currentJob.description) {
     btn.textContent = "Analysing…";
-    const key = await getApiKey();
-    if (key) analysed = await analyseWithGemini(currentJob.description, key);
+    const [key, profile] = await Promise.all([getApiKey(), getProfile()]);
+    if (key) analysed = await analyseWithGemini(currentJob.description, key, profile);
   }
 
   btn.textContent = "Saving…";
@@ -160,6 +199,7 @@ async function handleClip() {
     if (resp.ok) {
       document.getElementById("success-job-name").textContent =
         `"${truncate(job.title, 50)}" at ${truncate(job.company, 40)}`;
+      renderValuesMatch(job.valuesMatch, job.valuesMatchReason);
       showScreen("success");
     } else if (resp.error === "DUPLICATE") {
       showScreen("duplicate");
@@ -184,8 +224,8 @@ async function handleForceSave() {
   const status = document.getElementById("job-status-select")?.value || "saved";
   let analysed = null;
   if (currentJob.description) {
-    const key = await getApiKey();
-    if (key) analysed = await analyseWithGemini(currentJob.description, key);
+    const [key, profile] = await Promise.all([getApiKey(), getProfile()]);
+    if (key) analysed = await analyseWithGemini(currentJob.description, key, profile);
   }
 
   // Give the job a unique URL stamp so background.js won't re-flag it
@@ -197,6 +237,7 @@ async function handleForceSave() {
     if (resp.ok) {
       document.getElementById("success-job-name").textContent =
         `"${truncate(job.title, 50)}" at ${truncate(job.company, 40)}`;
+      renderValuesMatch(job.valuesMatch, job.valuesMatchReason);
       showScreen("success");
     } else {
       document.getElementById("error-detail").textContent = resp.error || "Unknown error";

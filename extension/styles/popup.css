@@ -217,6 +217,36 @@ body {
   text-align: center;
 }
 
+/* ── Values Match ────────────────────────────────────────────────────────── */
+.vm-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.vm-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.vm-high { background: rgba(46, 213, 115, 0.15); color: var(--green); }
+.vm-mid  { background: rgba(232, 184, 75, 0.15);  color: var(--yellow); }
+.vm-low  { background: rgba(255, 107, 129, 0.15); color: var(--red); }
+
+.vm-reason {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.4;
+}
+
 /* ── Footer ──────────────────────────────────────────────────────────────── */
 .popup-footer {
   padding: 7px 14px 9px;

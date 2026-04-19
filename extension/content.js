@@ -233,6 +233,12 @@
       } catch (_e) {
         sendResponse({ key: null });
       }
+    } else if (msg.type === "GET_PROFILE") {
+      try {
+        sendResponse({ profile: localStorage.getItem("jt_profile") || null });
+      } catch (_e) {
+        sendResponse({ profile: null });
+      }
     }
     return true;
   });
